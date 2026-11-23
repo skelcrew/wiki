@@ -1,0 +1,16 @@
+{
+  "name": "wiki",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "wiki": "src/cli.ts"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  }
+}
