@@ -1,2 +1,4 @@
-setup: bun install --frozen-lockfile
-test: bun test
+setup:
+  - bun install --frozen-lockfile
+test:
+  - bun test
