@@ -12,12 +12,14 @@ function escapeRegExp(text: string): string {
  * `wiki search <word>`: prints `<Page title>:<line number>: <line>` for every
  * line of every page that contains the word, case-insensitively, with each
  * occurrence highlighted. Titles are not searched. The arguments are joined
- * with spaces, so `wiki search two words` searches for the phrase.
+ * with spaces, so `wiki search two words` searches for the phrase; spaces in
+ * a quoted query such as `wiki search ' cat '` are kept and must match.
  * Returns 0 when something matched, 1 otherwise.
  */
 export default function search(args: string[]): number {
-  const word = args.join(" ").trim();
-  if (word === "") {
+  // Spaces in a quoted query are part of it, so the joined query isn't trimmed.
+  const word = args.join(" ");
+  if (word.trim() === "") {
     console.error(searchUsage);
     return 1;
   }

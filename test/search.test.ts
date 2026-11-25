@@ -70,11 +70,27 @@ test("highlights every match on a line", () => {
   expect(printed()).toEqual([`Home:1: ${match("cat", true)}, ${match("cat", true)} and ${match("CAT", true)}`]);
 });
 
-test("without color, prints the line as is", () => {
-  withColor(false);
+test("with NO_COLOR set, prints the line as is even on a terminal", () => {
+  process.env.NO_COLOR = "1";
+  process.stdout.isTTY = true;
   writePage("Home", "a cat\n");
   expect(search(["cat"])).toBe(0);
   expect(printed()).toEqual(["Home:1: a cat"]);
+});
+
+test("when stdout isn't a terminal, prints the line as is", () => {
+  delete process.env.NO_COLOR;
+  process.stdout.isTTY = false;
+  writePage("Home", "a cat\n");
+  expect(search(["cat"])).toBe(0);
+  expect(printed()).toEqual(["Home:1: a cat"]);
+});
+
+test("keeps spaces in a quoted query", () => {
+  withColor(false);
+  writePage("Home", "catfish\na cat here\n");
+  expect(search([" cat "])).toBe(0);
+  expect(printed()).toEqual(["Home:2: a cat here"]);
 });
 
 test("joins the arguments into a phrase", () => {
