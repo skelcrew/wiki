@@ -1,5 +1,6 @@
 # Shared with everyone who works on this repository. Never put a secret here.
 # Not decided yet: the lead reads the repository and proposes them. [] means none.
+can_merge: true
 setup:
   - bun install --frozen-lockfile
 test:
