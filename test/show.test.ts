@@ -52,9 +52,9 @@ test("prints the page with existing and missing links highlighted", () => {
 
 test("without color, missing links are marked", () => {
   withColor(false);
-  writePage("Home", "[[Home]] [[Gone]] [[a/b]]\n");
+  writePage("Home", "[[Home]] [[Gone]] [[a/b]] [[.draft]]\n");
   expect(show(["Home"])).toBe(0);
-  expect(log.mock.calls[0]![0]).toBe("[[Home]] [[Gone]] (missing) [[a/b]] (missing)");
+  expect(log.mock.calls[0]![0]).toBe("[[Home]] [[Gone]] (missing) [[a/b]] (missing) [[.draft]] (missing)");
 });
 
 test("joins the arguments into a multi-word title", () => {
