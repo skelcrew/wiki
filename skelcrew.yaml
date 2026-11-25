@@ -1,0 +1,18 @@
+# Shared with everyone who works on this repository. Never put a secret here.
+# Not decided yet: the lead reads the repository and proposes them. [] means none.
+setup:
+test:
+# At most this many builders at once in this repository. Change it to suit your machine and CI.
+limits: {threads: 3}
+# Keeps this repository on git alone, with no tracker.
+# tracker: none
+# A role can take a model: line, such as model: <name>. Without one, your config's model or the harness's default runs.
+roles:
+  lead:
+    harness: claude
+  builder:
+    harness: claude
+  reviewer:
+    harness: codex
+plugins:
+  - skelcrew/skelcrew-github
