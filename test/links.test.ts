@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, expect, spyOn, test } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import links, { linksUsage } from "../src/commands/links";
-import { writePage } from "../src/pages";
+import { pagesDir, writePage } from "../src/pages";
 
 let dir: string;
 let oldCwd: string;
@@ -68,9 +68,27 @@ test("an unknown page prints a one line error naming it and fails", () => {
   expect(log).not.toHaveBeenCalled();
 });
 
+test("a folder named like a page is not a page", () => {
+  writePage("Home", "[[Folder]]\n");
+  mkdirSync(join(pagesDir(), "Folder.md"));
+  expect(links(["Folder"])).toBe(1);
+  expect(error).toHaveBeenCalledTimes(1);
+  expect(error.mock.calls[0]![0]).toBe('wiki links: no page named "Folder"');
+  expect(log).not.toHaveBeenCalled();
+});
+
+test("an unknown title with a line break still prints one line", () => {
+  expect(links(["a\nb"])).toBe(1);
+  expect(error).toHaveBeenCalledTimes(1);
+  expect(error.mock.calls[0]![0]).toBe('wiki links: no page named "a\\nb"');
+  expect(error.mock.calls[0]![0]).not.toContain("\n");
+});
+
 test("an invalid title prints an error and fails", () => {
   expect(links(["../secret"])).toBe(1);
   expect(error).toHaveBeenCalledTimes(1);
+  expect(links(["a/\nb"])).toBe(1);
+  expect(error.mock.calls[1]![0]).not.toContain("\n");
   expect(log).not.toHaveBeenCalled();
 });
 
