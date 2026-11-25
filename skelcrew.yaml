@@ -13,8 +13,10 @@ limits: {threads: 3}
 roles:
   lead:
     harness: claude
+    model: opus
   builder:
     harness: claude
+    model: opus
   reviewer:
     harness: codex
 plugins:
